@@ -13,6 +13,7 @@ and warmers.
 
 * <<indices-create-index>>
 * <<indices-delete-index>>
+* <<indices-get-index>>
 * <<indices-exists>>
 * <<indices-open-close>>
 
@@ -21,7 +22,8 @@ and warmers.
 == Mapping management:
 
 * <<indices-put-mapping>>
-* <<indices-delete-mapping>>
+* <<indices-get-mapping>>
+* <<indices-get-field-mapping>>
 * <<indices-types-exists>>
 
 [float]
@@ -39,11 +41,16 @@ and warmers.
 * <<indices-warmers>>
 
 [float]
+[[shadow-replicas]]
+== Replica configurations
+* <<indices-shadow-replicas>>
+
+[float]
 [[monitoring]]
 == Monitoring:
-* <<indices-status>>
 * <<indices-stats>>
 * <<indices-segments>>
+* <<indices-recovery>>
 
 [float]
 [[status-management]]
@@ -52,13 +59,15 @@ and warmers.
 * <<indices-refresh>>
 * <<indices-flush>>
 * <<indices-optimize>>
-* <<indices-gateway-snapshot>>
+* <<indices-upgrade>>
 
 --
 
 include::indices/create-index.asciidoc[]
 
 include::indices/delete-index.asciidoc[]
+
+include::indices/get-index.asciidoc[]
 
 include::indices/indices-exists.asciidoc[]
 
@@ -68,9 +77,9 @@ include::indices/put-mapping.asciidoc[]
 
 include::indices/get-mapping.asciidoc[]
 
-include::indices/types-exists.asciidoc[]
+include::indices/get-field-mapping.asciidoc[]
 
-include::indices/delete-mapping.asciidoc[]
+include::indices/types-exists.asciidoc[]
 
 include::indices/aliases.asciidoc[]
 
@@ -84,11 +93,11 @@ include::indices/templates.asciidoc[]
 
 include::indices/warmers.asciidoc[]
 
-include::indices/status.asciidoc[]
-
 include::indices/stats.asciidoc[]
 
 include::indices/segments.asciidoc[]
+
+include::indices/recovery.asciidoc[]
 
 include::indices/clearcache.asciidoc[]
 
@@ -98,5 +107,7 @@ include::indices/refresh.asciidoc[]
 
 include::indices/optimize.asciidoc[]
 
-include::indices/gateway-snapshot.asciidoc[]
+include::indices/shadow-replicas.asciidoc[]
+
+include::indices/upgrade.asciidoc[]
 

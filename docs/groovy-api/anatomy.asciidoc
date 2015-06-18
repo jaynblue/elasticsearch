@@ -2,7 +2,7 @@
 == API Anatomy
 
 Once a <<client,GClient>> has been
-obtained, all of ElasticSearch APIs can be executed on it. Each Groovy
+obtained, all of Elasticsearch APIs can be executed on it. Each Groovy
 API is exposed using three different mechanisms.
 
 
@@ -50,7 +50,7 @@ failure:
 [source,js]
 --------------------------------------------------
 indexR.success = {IndexResponse response ->
-    pritnln "Indexed $response.id into $response.index/$response.type"
+    println "Indexed $response.id into $response.index/$response.type"
 }
 indexR.failure = {Throwable t ->
     println "Failed to index: $t.message"

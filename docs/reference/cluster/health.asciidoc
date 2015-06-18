@@ -17,7 +17,8 @@ $ curl -XGET 'http://localhost:9200/_cluster/health?pretty=true'
   "active_shards" : 10,                                                                      
   "relocating_shards" : 0,                                                                   
   "initializing_shards" : 0,                                                                 
-  "unassigned_shards" : 0                                                                    
+  "unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0
 }
 --------------------------------------------------
 
@@ -60,12 +61,17 @@ The cluster health API accepts the following request parameters:
 `wait_for_status`::
     One of `green`, `yellow` or `red`. Will wait (until
     the timeout provided) until the status of the cluster changes to the one
-    provided. By default, will not wait for any status.
+    provided or better, i.e. `green` > `yellow` > `red`. By default, will not 
+    wait for any status.
 
 `wait_for_relocating_shards`::
     A number controlling to how many relocating
     shards to wait for. Usually will be `0` to indicate to wait till all
-    relocation have happened. Defaults to not to wait.
+    relocations have happened. Defaults to not wait.
+    
+`wait_for_active_shards`::
+    A number controlling to how many active
+    shards to wait for. Defaults to not wait.
 
 `wait_for_nodes`::
     The request waits until the specified number `N` of

@@ -12,7 +12,8 @@ of the request includes the updated settings, for example:
 {
     "index" : {
         "number_of_replicas" : 4
-    } }
+    }
+}
 --------------------------------------------------
 
 The above will change the number of replicas to 4 from the current
@@ -24,9 +25,15 @@ curl -XPUT 'localhost:9200/my_index/_settings' -d '
 {
     "index" : {
         "number_of_replicas" : 4
-    } }
-'
+    }
+}'
 --------------------------------------------------
+
+[WARNING]
+========================
+When changing the number of replicas the index needs to be open. Changing
+the number of replicas on a closed index might prevent the index to be opened correctly again.
+========================
 
 Below is the list of settings that can be changed using the update
 settings API:
@@ -34,15 +41,16 @@ settings API:
 `index.number_of_replicas`::
     The number of replicas each shard has.
 
-`index.auto_expand_replicas`::
-    Set to an actual value (like `0-all`) or `false` to disable it.
+`index.auto_expand_replicas` (string)::
+    Set to a dash delimited lower and upper bound (e.g. `0-5`)
+    or one may use `all` as the upper bound (e.g. `0-all`), or `false` to disable it.
 
 `index.blocks.read_only`::
     Set to `true` to have the index read only, `false` to allow writes
     and metadata changes.
 
 `index.blocks.read`::
-    Set to `true` to disable read operations againstthe index.
+    Set to `true` to disable read operations against the index.
 
 `index.blocks.write`::
     Set to `true` to disable write operations against the index.
@@ -52,21 +60,6 @@ settings API:
 
 `index.refresh_interval`::
     The async refresh interval of a shard.
-
-`index.term_index_interval`::
-    The Lucene index term interval. Only applies to newly created docs.
-
-`index.term_index_divisor`::
-    The Lucene reader term index divisor.
-
-`index.index_concurrency`::
-    Defaults to `8`.
-
-`index.codec`::
-    Codec. Default to `default`.
-
-`index.fail_on_merge_failure`::
-    Default to `true`.
 
 `index.translog.flush_threshold_ops`::
     When to flush based on operations.
@@ -86,16 +79,19 @@ settings API:
     Set to `-1` to disable.
 
 `index.cache.filter.expire`::
-    The expire after access time for filter cache.
+    experimental[] The expire after access time for filter cache.
     Set to `-1` to disable.
 
 `index.gateway.snapshot_interval`::
-    The gateway snapshot interval (only applies to shared gateways).
-    Defaults to 10s.
+    experimental[] The gateway snapshot interval (only applies to shared
+    gateways). Defaults to 10s.
 
 <<index-modules-merge,merge policy>>::
     All the settings for the merge policy currently configured.
     A different merge policy can't be set.
+
+`index.merge.scheduler.*`::
+    experimental[] All the settings for the merge scheduler.
 
 `index.routing.allocation.include.*`::
     A node matching any rule will be allowed to host shards from the index.
@@ -107,43 +103,50 @@ settings API:
     Only nodes matching all rules will be allowed to host shards from the index.
 
 `index.routing.allocation.disable_allocation`::
-    Disable allocation. Defaults to `false`.
+    Disable allocation. Defaults to `false`. Deprecated in favour for `index.routing.allocation.enable`.
 
 `index.routing.allocation.disable_new_allocation`::
-    Disable new allocation. Defaults to `false`.
+    Disable new allocation. Defaults to `false`. Deprecated in favour for `index.routing.allocation.enable`.
 
 `index.routing.allocation.disable_replica_allocation`::
-    Disable replica allocation. Defaults to `false`.
+    Disable replica allocation. Defaults to `false`. Deprecated in favour for `index.routing.allocation.enable`.
+
+`index.routing.allocation.enable`::
+    Enables shard allocation for a specific index. It can be set to:
+    * `all` (default) - Allows shard allocation for all shards.
+    * `primaries` - Allows shard allocation only for primary shards.
+    * `new_primaries` - Allows shard allocation only for primary shards for new indices.
+    * `none` - No shard allocation is allowed.
+
+`index.routing.rebalance.enable`::
+    Enables shard rebalancing for a specific index. It can be set to:
+    * `all` (default) - Allows shard rebalancing for all shards.
+    * `primaries` - Allows shard rebalancing only for primary shards.
+    * `replicas` - Allows shard rebalancing only for replica shards.
+    * `none` - No shard rebalancing is allowed.
 
 `index.routing.allocation.total_shards_per_node`::
-    Controls the total number of shards allowed to be allocated on a single node. Defaults to unbounded (`-1`).
+    Controls the total number of shards (replicas and primaries) allowed to be allocated on a single node. Defaults to unbounded (`-1`).
 
 `index.recovery.initial_shards`::
     When using local gateway a particular shard is recovered only if there can be allocated quorum shards in the cluster. It can be set to:
     * `quorum` (default)
     * `quorum-1` (or `half`)
     * `full`
-    * full-1`.
+    * `full-1`.
     * Number values are also supported, e.g. `1`.
 
 `index.gc_deletes`::
+    experimental[]
 
 `index.ttl.disable_purge`::
-    Disables temporarily the purge of expired docs.
+    experimental[] Disables temporarily the purge of expired docs.
 
 <<index-modules-store,store level throttling>>::
     All the settings for the store level throttling policy currently configured.
 
 `index.translog.fs.type`::
-    Either `simple` or `buffered` (default).
-
-`index.compound_format`::
-    See <<index-compound-format,`index.compound_format`>> in
-    <<index-modules-settings>>.
-
-`index.compound_on_flush`::
-    See <<index-compound-on-flush,`index.compound_on_flush>> in
-    <<index-modules-settings>>.
+    experimental[] Either `simple` or `buffered` (default).
 
 <<index-modules-slowlog>>::
     All the settings for slow log.

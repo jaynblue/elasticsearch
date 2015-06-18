@@ -20,7 +20,7 @@ type:
 |Setting |Description
 |`max_shingle_size` |The maximum shingle size. Defaults to `2`.
 
-|`min_shingle_sizes` |The minimum shingle size. Defaults to `2`.
+|`min_shingle_size` |The minimum shingle size. Defaults to `2`.
 
 |`output_unigrams` |If `true` the output will contain the input tokens
 (unigrams) as well as the shingles. Defaults to `true`.
@@ -32,5 +32,9 @@ no effect. Defaults to `false`.
 
 |`token_separator` |The string to use when joining adjacent tokens to
 form a shingle. Defaults to `" "`.
+|`filler_token` | The string to use as a replacement for each position 
+at which there is no actual token in the stream. For instance this string is
+used if the position increment is greater than one when a `stop` filter is used
+together with the `shingle` filter. Defaults to `"_"`
 |=======================================================================
 
